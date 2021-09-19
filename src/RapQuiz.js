@@ -73,7 +73,6 @@ class RapQuiz extends React.Component {
         evt.preventDefault();
         this.calculateScore();
         this.setState({submittingQuiz: true});
-
         window.scrollTo({top: 0, behavior: 'smooth'})
     }
 
