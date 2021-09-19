@@ -7,6 +7,7 @@ html {
   background-position-y: -580px;
   background-repeat: repeat;
   background-size: cover;
+  background-attachment: fixed;
 }
 
 .wrapper {

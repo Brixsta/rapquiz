@@ -1,6 +1,8 @@
 import React from 'react';
 import './RapQuiz.css';
 import RapQuizScore from './RapQuizScore';
+import SubmitButton from './SubmitButton';
+import RadioButton from './RadioButton';
 
 class RapQuiz extends React.Component {
 
@@ -8,23 +10,44 @@ class RapQuiz extends React.Component {
         super();
 
         this.state = {
+            questions: ["1. What year was Tupac killed?", "2. Dr. Dre was a part of this rap group:",
+            "3. What is the name of P diddy's record label?",
+            `4. Which rap artist is responsible for the song "Put it On"?`, "5. Who was Dr. Dre's sidekick?"],
             guesses: [{number: 1, guess: ''}, {number: 2, guess: ''}, {number: 3, guess:''}, 
             {number: 4, guess: ''}, {number: 5, guess: ''}],
             score: 0,
-            answered: 0,
             submittingQuiz: false
         }
-
         this.setGuess = this.setGuess.bind(this);
         this.calculateScore = this.calculateScore.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.calculateNumAnswered = this.calculateNumAnswered.bind(this);
         this.resetQuiz = this.resetQuiz.bind(this);
     }
 
     resetQuiz () {
+        // grab all questions by className
+        let class1 = Array.from(document.getElementsByClassName('1'));
+        let class2 = Array.from(document.getElementsByClassName('2'));
+        let class3 = Array.from(document.getElementsByClassName('3'));
+        let class4 = Array.from(document.getElementsByClassName('4'));
+        let class5 = Array.from(document.getElementsByClassName('5'));
+
+        // visually reset form, react doesn't count this as uncheck per radio btn
         document.getElementsByClassName('rap-quiz-form')[0].reset();
-        this.setState({submittingQuiz: false})
+
+        // reset guesses
+        this.setState({submittingQuiz: false, guesses: [{number: 1, guess: ''}, 
+        {number: 2, guess: ''}, {number: 3, guess:''}, 
+        {number: 4, guess: ''}, {number: 5, guess: ''}]});
+
+        // loop through radio btns, to uncheck them
+        for(let i=0; i<4; i++) {
+            class1[i].checked = false;
+            class2[i].checked = false;
+            class3[i].checked = false;
+            class4[i].checked = false;
+            class5[i].checked = false;
+        }
     }
 
     setGuess (id, value) {
@@ -49,32 +72,39 @@ class RapQuiz extends React.Component {
         // compare guess to answer
         if(questionOneGuess === '1996') {currentScore++;}
         if(questionTwoGuess === 'NWA') {currentScore++;}
-        if(questionThreeGuess === 'bad-boy') {currentScore++;}
-        if(questionFourGuess === 'big-l') {currentScore++;}
-        if(questionFiveGuess === 'snoop-dogg') {currentScore++;}
+        if(questionThreeGuess === 'Bad Boy Records') {currentScore++;}
+        if(questionFourGuess === 'Big L') {currentScore++;}
+        if(questionFiveGuess === 'Snoop Dogg') {currentScore++;}
 
         // apply currentScore to state
         this.setState({score: currentScore});
     }
 
-    calculateNumAnswered () {
-        let numAnswered = 0;
-        const guesses = this.state.guesses;
+    handleClick () {
 
-        for(let i=0; i<guesses.length; i++) {
-            if(guesses[i].guess.length > 0) {
-                numAnswered++;
-            }
+        let class1 = Array.from(document.getElementsByClassName('1'));
+        let class2 = Array.from(document.getElementsByClassName('2'));
+        let class3 = Array.from(document.getElementsByClassName('3'));
+        let class4 = Array.from(document.getElementsByClassName('4'));
+        let class5 = Array.from(document.getElementsByClassName('5'));
+
+        // make sure no questions are left unanswered
+        let class1Check = class1.every(item => item.checked === false);
+        let class2Check = class2.every(item => item.checked === false);
+        let class3Check = class3.every(item => item.checked === false);
+        let class4Check = class4.every(item => item.checked === false);
+        let class5Check = class5.every(item => item.checked === false);
+
+        if(class1Check || class2Check || class3Check || class4Check || class5Check) {
+           return alert('Please answer all the questions.');
         }
-        this.setState({answered: numAnswered})
-    }
 
-    handleClick (evt) {
-        evt.preventDefault();
+        // user submits, score is calculated
         this.calculateScore();
         this.setState({submittingQuiz: true});
-        window.scrollTo({top: 0, behavior: 'smooth'})
+        window.scrollTo({top: 0, behavior: 'smooth'});
     }
+
 
     render () {
         return (
@@ -83,95 +113,50 @@ class RapQuiz extends React.Component {
                 <form
                 className="rap-quiz-form">
                     <h1 id="start" className="rap-quiz-title">90s Golden Age of Rap Quiz</h1>
-                    <div 
-                    className="quiz-question-container"
-                    onChange={(evt)=>{
-                        this.setGuess(evt.target.id, evt.target.value);
-                        this.calculateNumAnswered();
-                    }}>
-                        <p className="quiz-question-text">1. What year was Tupac killed?</p>
-                        <input type="radio" id="1" value="1994" name="tupac"></input>
-                        <label htmlFor="1994">1994</label><br></br>
-                        <input type="radio" id="1" value="1996" name="tupac"></input>
-                        <label htmlFor="1996">1996</label><br></br>
-                        <input type="radio" id="1" value="1997" name="tupac"></input>
-                        <label htmlFor="1997">1997</label><br></br>
-                        <input type="radio" id="1" value="1998" name="tupac"></input>
-                        <label htmlFor="1998">1998</label>
-                    </div>
-
-                    <div 
-                    className="quiz-question-container"
-                    onChange={(evt)=>{
-                        this.setGuess(evt.target.id, evt.target.value);
-                        this.calculateNumAnswered();
-                    }}>
-                        <p className="quiz-question-text">2. Dr. Dre was a part of this rap group:</p>
-                        <input type="radio" id="2" value="AWA" name="group"></input>
-                        <label htmlFor="AWA">AWA</label><br></br>
-                        <input type="radio" id="2" value="APA" name="group"></input>
-                        <label htmlFor="APA">APA</label><br></br>
-                        <input type="radio" id="2" value="PWA" name="group"></input>
-                        <label htmlFor="PWA">PWA</label><br></br>
-                        <input type="radio" id="2" value="NWA" name="group"></input>
-                        <label htmlFor="NWA">NWA</label>
-                    </div>
-
-                    <div 
-                    className="quiz-question-container"
-                    onChange={(evt)=>{
-                        this.setGuess(evt.target.id, evt.target.value);
-                        this.calculateNumAnswered();
-                    }}>
-                        <p className="quiz-question-text">3. What is the name of P diddy's record label?</p>
-                        <input type="radio" id="3" value="bad-boy" name="record"></input>
-                        <label htmlFor="bad-boy">Bad Boy Records</label><br></br>
-                        <input type="radio" id="3" value="deathrow" name="record"></input>
-                        <label htmlFor="deathrow">Deathrow Records</label><br></br>
-                        <input type="radio" id="3" value="ruthless" name="record"></input>
-                        <label htmlFor="ruthless">Ruthless Records</label><br></br>
-                        <input type="radio" id="3" value="ruthless-death" name="record"></input>
-                        <label htmlFor="ruthless-death">Ruthless Death Records</label>
-                    </div>
-
-                    <div 
-                    className="quiz-question-container"
-                    onChange={(evt)=>{
-                        this.setGuess(evt.target.id, evt.target.value);
-                        this.calculateNumAnswered();
-                    }}>
-                        <p className="quiz-question-text">4. Which rap artist is responsible for the song "Put it On"?</p>
-                        <input type="radio" id="4" value="DMX" name="song"></input>
-                        <label htmlFor="bad-boy">DMX</label><br></br>
-                        <input type="radio" id="4" value="mobb-deep" name="song"></input>
-                        <label htmlFor="mobb-deep">Mobb Deep</label><br></br>
-                        <input type="radio" id="4" value="jay-z" name="song"></input>
-                        <label htmlFor="jay-z">Jay-Z</label><br></br>
-                        <input type="radio" id="4" value="big-l" name="song"></input>
-                        <label htmlFor="big-l">Big L</label>
-                    </div>
-    
-                    <div 
-                    className="quiz-question-container"
-                    onChange={(evt)=>{
-                        this.setGuess(evt.target.id, evt.target.value);
-                        this.calculateNumAnswered();
-                    }}>
-                        <p className="quiz-question-text">5. Who was Dr. Dre's sidekick?</p>
-                        <input type="radio" id="5" value="pimp-c" name="sidekick"></input>
-                        <label htmlFor="pimp-c">Pimp-C</label><br></br>
-                        <input type="radio" id="5" value="c-murda" name="sidekick"></input>
-                        <label htmlFor="c-murda">C-Murder</label><br></br>
-                        <input type="radio" id="5" value="snoop-dogg" name="sidekick"></input>
-                        <label htmlFor="snoop-dogg">Snoop Dogg</label><br></br>
-                        <input type="radio" id="5" value="mc-ren" name="sidekick"></input>
-                        <label htmlFor="mc-ren">MC Ren</label>
-                    </div>
-                    {/* <Link activeClass="active" to="start" spy={true} smooth={true}>Home</Link> */}
-                    <button 
-                    // disabled={this.state.answered === 5 ? false : true}
-                    onClick={this.handleClick}
-                    className="submit-button">Submit</button>
+                    <RadioButton 
+                        currentQuestion={this.state.questions[0]}
+                        setGuess={this.setGuess}
+                        id={1}
+                        name={'tupac'}
+                        values={['1994', '1996', '1997', '1998']}
+                        class={'1'}
+                    />
+                    <RadioButton 
+                        currentQuestion={this.state.questions[1]}
+                        setGuess={this.setGuess}
+                        id={2}
+                        name={'group'}
+                        values={['AWA', 'APA', 'PWA', 'NWA']}
+                        class={'2'}
+                    />
+                    <RadioButton 
+                        currentQuestion={this.state.questions[2]}
+                        setGuess={this.setGuess}
+                        id={3}
+                        name={'record'}
+                        values={['Bad Boy Records', 'Deathrow Records', 'Ruthless Records', 'Ruthless Death Records']}
+                        class={'3'}
+                    />
+                    <RadioButton 
+                        currentQuestion={this.state.questions[3]}
+                        setGuess={this.setGuess}
+                        id={4}
+                        name={'song'}
+                        values={['DMX', 'Mobb Deep', 'Jay-Z', 'Big L']}
+                        class={'4'}
+                    />
+                    <RadioButton 
+                        currentQuestion={this.state.questions[4]}
+                        setGuess={this.setGuess}
+                        id={5}
+                        name={'sidekick'}
+                        values={['Pimp-C', 'C-Murder', 'Snoop Dogg', 'MC Ren']}
+                        class={'5'}
+                    />
+                    <SubmitButton
+                        handleClick={this.handleClick}
+                        answered={this.state.answered}
+                    />
                 </form>
                 {this.state.submittingQuiz && <RapQuizScore
                 score={this.state.score}
