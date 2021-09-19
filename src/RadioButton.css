@@ -15,6 +15,15 @@ input[type="radio"] {
     height: 16px;
     width: 16px;
     user-select: none;
+    position: relative;
+}
+
+input[type="radio"]::before {
+    height: 25px;
+    width: 25px;
+    content: ' ';
+    position: absolute;
+    border-radius: 100%;
 }
 
 label {
