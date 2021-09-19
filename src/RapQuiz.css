@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital@0;1&family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,400;1,600&family=Raleway&display=swap');
+
+.rap-quiz-container {
+    width: 50%;
+    height: 54.6rem;
+    box-sizing: border-box;
+    padding: 2rem;
+    position: relative;
+    overflow-y: auto;
+}
+
+.rap-quiz-title {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    background-color: black;
+    color: rgb(218, 218, 218);
+    opacity: .9;
+    width: 89%;
+    padding: .5rem;
+    border-radius: 5px;
+}
+
+.quiz-question-text {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-decoration: underline;
+}
+
+.submit-button {
+    padding: 1rem;
+    cursor: pointer;
+    margin: 0rem auto;
+    margin-top: 2rem;
+    display: block;
+    width: 30%;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #ff8d2a;
+    box-shadow: 0px 0px 10px 5px rgba(0,0,0,.5);
+    transition: all .2s ease-in-out;
+    font-size: 1.25rem;
+    border: 0;
+    border: solid 2px black;
+    box-sizing: border-box;
+}
+
+.submit-button:hover {
+    background-color: black;
+    color: white;
+    opacity: .9;
+}
+
+input[type="radio"]:focus {
+    outline: none;
+}
+
+input[type="radio"] {
+    margin: 1rem;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
+}
+
+.rap-quiz-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quiz-question-container {
+    background-color: black;
+    padding: 1rem;
+    box-sizing: border-box;
+    margin: 1rem;
+    border-radius: 5px;
+    font-family: 'Open Sans', sans-serif;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,.5);
+    border: solid 1px rgba(0,0,0,.5);
+    opacity: .9;
+    color: rgb(218, 218, 218);
+    width: 90%;
+}
